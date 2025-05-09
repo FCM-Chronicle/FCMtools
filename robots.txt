@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://fcm-chronicle.github.io/FCMtools/sitemap.xml
