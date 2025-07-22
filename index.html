@@ -1,886 +1,364 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta name="google-site-verification" content="4XUipqpdRxTrgHXAlNuYEPLTn9Njhmah2mtqYZqNvYg" />
+    <meta name="description" content="FC모바일에 도움이 되는 도구들 입니다.">
+    <meta name="keywords" content="fc모바일, 피모, 도구, 피파모바일, 피모, 엪모, 툴">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FC 모바일 스킬부스트 검색</title>
+    <title>FC 모바일 툴</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            color: white;
+            font-family: 'Orbitron', monospace;
             min-height: 100vh;
-            padding: 10px;
-            position: relative;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             overflow-x: hidden;
         }
-
-        /* 배경 애니메이션 효과 */
-        body::before {
-            content: '';
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 배경 파티클 효과 */
+        .particles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(57, 255, 20, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.1) 0%, transparent 50%);
-            animation: backgroundShift 10s ease-in-out infinite alternate;
-            z-index: -1;
+            pointer-events: none;
+            z-index: 1;
         }
-
-        @keyframes backgroundShift {
-            0% { transform: translateX(0px) translateY(0px); }
-            100% { transform: translateX(10px) translateY(-10px); }
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: clamp(24px, 5vw, 32px);
-            margin-bottom: 30px;
-            background: linear-gradient(45deg, #39FF14, #00FFFF, #FF1493);
-            background-size: 400% 400%;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease-in-out infinite;
-            text-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
-            font-weight: bold;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(57, 255, 20, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .section:hover {
-            border-color: rgba(57, 255, 20, 0.4);
-            box-shadow: 
-                0 12px 40px rgba(0, 0, 0, 0.4),
-                0 0 20px rgba(57, 255, 20, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .dropdown {
-            position: relative;
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #39FF14;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid rgba(57, 255, 20, 0.3);
-            border-radius: 25px;
-            background: rgba(0, 0, 0, 0.4);
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        input[type="text"]:focus {
-            border-color: #39FF14;
-            box-shadow: 
-                0 0 20px rgba(57, 255, 20, 0.3),
-                inset 0 2px 4px rgba(0, 0, 0, 0.2);
-            transform: scale(1.02);
-        }
-
-        input[type="text"]::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .dropdown-content {
-            display: none;
+        
+        .particle {
             position: absolute;
-            top: 100%;
+            width: 2px;
+            height: 2px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+            opacity: 0.7;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            width: 90%;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            color: #00ff88;
+            text-shadow: 
+                0 0 5px #00ff88,
+                0 0 10px #00ff88,
+                0 0 20px #00ff88,
+                0 0 40px #00ff88;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+        }
+        
+        @keyframes pulse {
+            from {
+                text-shadow: 
+                    0 0 5px #00ff88,
+                    0 0 10px #00ff88,
+                    0 0 20px #00ff88,
+                    0 0 40px #00ff88;
+            }
+            to {
+                text-shadow: 
+                    0 0 10px #00ff88,
+                    0 0 20px #00ff88,
+                    0 0 30px #00ff88,
+                    0 0 60px #00ff88;
+            }
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0a0a0;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+        
+        .link-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .link {
+            position: relative;
+            padding: 25px 30px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+        
+        .link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .link:hover::before {
+            left: 100%;
+        }
+        
+        .link::after {
+            content: '';
+            position: absolute;
+            top: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(57, 255, 20, 0.3);
+            bottom: 0;
+            background: linear-gradient(145deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
             border-radius: 15px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-top: 5px;
         }
-
-        .dropdown-content div {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .link:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #00ff88;
+            box-shadow: 
+                0 15px 35px rgba(0, 255, 136, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            color: #00ff88;
         }
-
-        .dropdown-content div:last-child {
-            border-bottom: none;
+        
+        .link:hover::after {
+            opacity: 1;
         }
-
-        .dropdown-content div:hover {
-            background: linear-gradient(90deg, rgba(57, 255, 20, 0.2), rgba(0, 255, 255, 0.2));
-            color: #39FF14;
-            transform: translateX(5px);
+        
+        .link:active {
+            transform: translateY(-4px) scale(1.01);
         }
-
-        .search-button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #39FF14, #00FFFF);
-            border: none;
-            border-radius: 25px;
-            color: black;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .search-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(57, 255, 20, 0.4);
-            background: linear-gradient(45deg, #00FFFF, #39FF14);
-        }
-
-        .search-button:active {
-            transform: translateY(0);
-        }
-
-        .result {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(57, 255, 20, 0.4);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 15px;
-            backdrop-filter: blur(5px);
-            line-height: 1.6;
-            min-height: auto; /* 고정 높이 제거 */
-            word-wrap: break-word;
-        }
-
-        .result:empty::after {
-            content: "검색 결과가 여기에 표시됩니다";
-            color: rgba(255, 255, 255, 0.4);
-            font-style: italic;
-        }
-
-        .bold {
-            font-weight: bold;
-            color: #39FF14;
-            text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
-        }
-
-        .tier-result {
-            background: rgba(0, 0, 0, 0.6);
-            border-left: 4px solid #39FF14;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            backdrop-filter: blur(5px);
-        }
-
-        .tier-result strong {
-            color: #00FFFF;
+        
+        /* 아이콘 추가 */
+        .link-icon {
             display: inline-block;
-            margin-bottom: 5px;
+            margin-right: 12px;
+            font-size: 1.3rem;
+            filter: drop-shadow(0 0 5px currentColor);
         }
-
-        .footer {
+        
+        footer {
+            margin-top: 60px;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            border-top: 1px solid rgba(57, 255, 20, 0.2);
+            backdrop-filter: blur(10px);
         }
-
-        .footer h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #39FF14;
-        }
-
-        .copy-button {
-            background: linear-gradient(45deg, #FF1493, #39FF14);
-            border: none;
-            border-radius: 20px;
-            color: white;
-            padding: 10px 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .copy-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
-        }
-
-        .info-text {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .credits {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* 스크롤바 스타일링 */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #39FF14, #00FFFF);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(45deg, #00FFFF, #39FF14);
-        }
-
-        /* 모바일 최적화 */
+        
+        /* 반응형 디자인 */
         @media (max-width: 768px) {
             .container {
-                padding: 15px;
+                width: 95%;
+                padding: 20px 15px;
             }
-
-            .section {
-                padding: 15px;
+            
+            .link-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .link {
+                padding: 20px 25px;
+                font-size: 1rem;
+            }
+            
+            h1 {
                 margin-bottom: 15px;
+                letter-spacing: 2px;
             }
-
-            input[type="text"] {
-                padding: 12px 16px;
-                font-size: 16px; /* iOS에서 줌 방지 */
-            }
-
-            .search-button {
-                padding: 12px;
-                font-size: 16px;
-            }
-
-            .dropdown-content {
-                max-height: 150px;
-            }
-
-            label {
-                font-size: 13px;
+            
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 30px;
             }
         }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-
-            .section {
-                padding: 12px;
-            }
-
-            input[type="text"] {
-                padding: 10px 14px;
-            }
-
-            .search-button {
-                padding: 10px;
-                font-size: 15px;
-            }
-        }
-
-        /* 터치 디바이스 최적화 */
-        @media (hover: none) and (pointer: coarse) {
-            .dropdown-content div {
-                padding: 15px 20px;
-            }
-
-            .search-button {
-                padding: 16px;
-            }
-
-            input[type="text"] {
-                padding: 16px 20px;
-            }
-        }
-
+        
         /* 로딩 애니메이션 */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(57, 255, 20, 0.3);
-            border-radius: 50%;
-            border-top-color: #39FF14;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
+        .link {
+            animation: slideUp 0.6s ease-out;
+            animation-fill-mode: both;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .link:nth-child(1) { animation-delay: 0.1s; }
+        .link:nth-child(2) { animation-delay: 0.2s; }
+        .link:nth-child(3) { animation-delay: 0.3s; }
+        .link:nth-child(4) { animation-delay: 0.4s; }
+        .link:nth-child(5) { animation-delay: 0.5s; }
+        .link:nth-child(6) { animation-delay: 0.6s; }
+        .link:nth-child(7) { animation-delay: 0.7s; }
+        .link:nth-child(8) { animation-delay: 0.8s; }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 배경 파티클 -->
+    <div class="particles" id="particles"></div>
+    
     <div class="container">
-        <h1>FC 모바일 스킬부스트 검색</h1>
-
-        <!-- 스킬부스트 검색 섹션 -->
-        <div class="section">
-            <div class="dropdown">
-                <label for="skill-search">🔍 스킬부스트 검색</label>
-                <input type="text" id="skill-search" placeholder="스킬부스트 이름을 입력하세요..." autocomplete="off">
-                <div id="skill-dropdown" class="dropdown-content"></div>
-            </div>
-            <div id="skill-content" class="result"></div>
-        </div>
-
-        <!-- 스탯 검색 섹션 -->
-        <div class="section">
-            <h3 style="color: #39FF14; margin-bottom: 15px; text-align: center;">📊 스탯으로 스킬부스트 찾기</h3>
-            
-            <div class="dropdown">
-                <label for="stat-search1">스탯 1</label>
-                <input type="text" id="stat-search1" placeholder="첫 번째 스탯 입력..." autocomplete="off">
-                <div id="stat-dropdown1" class="dropdown-content"></div>
-            </div>
-
-            <div class="dropdown">
-                <label for="stat-search2">스탯 2</label>
-                <input type="text" id="stat-search2" placeholder="두 번째 스탯 입력..." autocomplete="off">
-                <div id="stat-dropdown2" class="dropdown-content"></div>
-            </div>
-
-            <div class="dropdown">
-                <label for="stat-search3">스탯 3</label>
-                <input type="text" id="stat-search3" placeholder="세 번째 스탯 입력..." autocomplete="off">
-                <div id="stat-dropdown3" class="dropdown-content"></div>
-            </div>
-
-            <button id="search-button" class="search-button">🔍 검색하기</button>
-            <div id="stat-content" class="result"></div>
-        </div>
-
-        <!-- 포지션 검색 섹션 -->
-        <div class="section">
-            <div class="dropdown">
-                <label for="position-search">⚽ 포지션별 티어표 (1티어: 개좋음, 2티어: 좋음)</label>
-                <input type="text" id="position-search" placeholder="포지션을 입력하세요 (ST, CM, GK 등)..." autocomplete="off">
-                <div id="position-dropdown" class="dropdown-content"></div>
-            </div>
-            <div id="tier-content" class="result"></div>
-        </div>
-
-        <!-- 푸터 -->
-        <div class="footer">
-            <div class="info-text">기준: 2025/01/02</div>
-            <div class="credits">Made by 이하준, 고범준</div>
-            
-            <h2>📧 문의용 이메일</h2>
-            <input type="text" id="email" value="leehajune1017@gmail.com" readonly style="display: none;">
-            <button class="copy-button" onclick="copyEmail()">이메일 복사하기</button>
+        <h1>FC MOBILE TOOLS</h1>
+        <p class="subtitle">최고의 FC 모바일 도구들을 한 곳에서</p>
+        
+        <div class="link-container">
+            <a href="https://fcm-chronicle.github.io/fcmskill/" class="link" target="_blank">
+                <span class="link-icon">⚡</span>스킬 부스트
+            </a>
+            <a href="https://fcmawakestat.glitch.me/" class="link" target="_blank">
+                <span class="link-icon">🔥</span>각성 스탯 조회
+            </a>
+            <a href="https://fcmobilemaxstat.glitch.me" class="link" target="_blank">
+                <span class="link-icon">📈</span>만렙 스탯 조회
+            </a>
+            <a href="https://rhythmie-space.com/fc-mobile-calculator" class="link" target="_blank">
+                <span class="link-icon">💰</span>수수료 계산기
+            </a>
+            <a href="https://fcmobileenhancesimul.glitch.me" class="link" target="_blank">
+                <span class="link-icon">🔨</span>강화 시뮬레이터
+            </a>
+            <a href="https://fcmobile.nexon.com/DataCenterWeb/SquadMaker" class="link" target="_blank">
+                <span class="link-icon">⚽</span>스쿼드 메이커
+            </a>
+            <a href="https://fcmprediction.glitch.me/" class="link" target="_blank">
+                <span class="link-icon">📊</span>선수 시세 예측
+            </a>
+            <a href="https://fcmplayerreview.glitch.me/" class="link" target="_blank">
+                <span class="link-icon">⭐</span>선수 리뷰
+            </a>
         </div>
     </div>
+    
+    <footer>
+        © 2025 FC Mobile Tools - Made by FCM/CHRONICLE
+    </footer>
 
     <script>
-        const skillBoosts = {
-            "막스맨": ["가속", "결정력", "중거리 슛", "위치 선정", "드리블"],
-            "파워풀": ["가속", "결정력", "위치선정", "헤딩", "힘"],
-            "스나이퍼": ["가속", "결정력", "중거리 슛", "위치 선정", "드리블"],
-            "마에스트로": ["가속", "결정력", "짧은 패스", "드리블", "볼 컨트롤"],
-            "아키텍트": ["가속", "슈팅력", "드리블", "볼 컨트롤", "민첩성"],
-            "결정력": ["결정력", "슈팅력", "위치 선정", "점프", "드리블"],
-            "타이거": ["결정력", "슈팅력", "위치 선정", "힘", "드리블"],
-            "공격 마스터": ["가속", "중거리 슛", "짧은 패스", "드리블", "볼 컨트롤"],
-            "호크": ["가속", "결정력", "크로스", "감아차기", "드리블"],
-            "나이프": ["가속", "긴패스", "크로스", "민첩성", "드리블"],
-            "세컨드 스트라이커": ["결정력", "드리블", "슈팅력", "볼 컨트롤", "짧은 패스"],
-            "슈퍼카": ["가속", "질주 속도", "크로스", "긴패스", "드리블"],
-            "위치 선정": ["위치 선정", "헤딩", "슈팅력", "민첩성", "밸런스"],
-            "헤딩": ["결정력", "반응도", "헤딩", "힘", "점프"],
-            "공격": ["볼 컨트롤", "결정력", "질주 속도", "반응도", "발리슛"],
-            "민첩성": ["결정력", "드리블", "민첩성", "반응도", "밸런스"],
-            "페이스": ["가속", "질주 속도", "긴패스", "크로스", "민첩성"],
-            "슈팅": ["결정력", "슈팅력", "중거리 슛", "위치 선정", "발리슛"],
-            "속도": ["질주 속도", "위치 선정", "드리블", "볼 컨트롤", "민첩성"],
-            "어택미드": ["질주 속도", "짧은 패스", "긴패스", "드리블", "민첩성"],
-            "패스": ["짧은 패스", "긴패스", "시야", "크로스", "밸런스"],
-            "제너럴리스트": ["중거리 슛", "민첩성", "반응도", "가로채기", "공격성"],
-            "주장": ["드리블", "짧은 패스", "볼 컨트롤", "시야", "민첩성"],
-            "짧은 패스": ["짧은 패스", "위치 선정", "드리블", "태클", "힘"],
-            "플레이메이커": ["짧은 패스", "긴패스", "시야", "드리블", "반응도"],
-            "미드엔진": ["중거리 슛", "긴패스", "감아차기", "밸런스", "태클"],
-            "홀딩": ["가속", "마크", "태클", "공격성", "힘"],
-            "월": ["가속", "마크", "태클", "가로채기", "공격성"],
-            "특별 구성": ["마크", "질주 속도", "볼 컨트롤", "힘", "슬라이딩 태클"],
-            "스톤": ["질주 속도", "긴패스", "마크", "가로채기", "공격성"],
-            "공격성": ["마크", "슬라이딩 태클", "헤딩", "힘", "점프"],
-            "가로채기": ["가로채기", "반응도", "헤딩", "태클", "공격성"],
-            "수비 마스터": ["가속", "태클", "슬라이딩 태클", "헤딩", "공격성"],
-            "앵커": ["마크", "가로채기", "헤딩", "힘", "점프"],
-            "수비": ["긴패스", "밸런스", "마크", "슬라이딩 태클", "헤딩"],
-            "피지컬": ["반응도", "슬라이딩 태클", "힘", "공격성", "점프"],
-            "반응도": ["크로스", "드리블", "슬라이딩 태클", "반응도", "가로채기"],
-            "마크": ["짧은 패스", "반응도", "마크", "가로채기", "헤딩"],
-            "플라이윙": ["질주 속도", "긴패스", "마크", "가로채기", "공격성"],
-            "글래디에이터": ["가속", "크로스", "마크", "태클", "가로채기"],
-            "라스트라인": ["다이빙", "반사 신경", "GK 위치 선정", "핸들링", "킥"],
-            "GK 다이빙": ["다이빙", "반사 신경", "GK 위치 선정", "핸들링", "반응도"],
-            "글러브": ["다이빙", "GK 위치 선정", "반사 신경", "긴패스", "킥"],
-            "반사 신경": ["다이빙", "GK 위치 선정", "반사 신경", "긴패스", "민첩성"],
-            "다이빙": ["다이빙", "핸들링", "점프", "긴패스", "반사 신경"],
-            "핸들링": ["핸들링", "킥", "반응도", "긴패스", "반사 신경"],
-            "카운터": ["긴패스", "민첩성", "중거리 슛", "위치 선정", "시야"],
-            "GK 위치 선정": ["GK 위치 선정", "킥", "반응도", "긴패스", "다이빙"],
-            "넘버원": ["GK 위치 선정", "다이빙", "킥", "반응도", "핸들링"],
-            "GK 제너럴리스트": ["킥", "반응도", "GK 위치 선정", "긴패스", "핸들링"],
-            "프리킥": ["프리킥", "감아차기", "중거리 슛", "슈팅력", "시야"],
-            "슈팅력": ["질주 속도", "슈팅력", "중거리 슛", "발리슛", "볼 컨트롤"],
-            "드리블": ["결정력", "중거리 슛", "드리블", "반응도", "발리슛"],
-            "가속": ["가속", "위치 선정", "발리슛", "긴패스", "반응도"],
-            "크로스": ["긴패스", "시야", "크로스", "감아차기", "마크"],
-            "볼 컨트롤": ["짧은 패스", "크로스", "드리블", "볼 컨트롤", "밸런스"],
-            "긴패스": ["긴패스", "시야", "감아차기", "민첩성", "가로채기"],
-            "시야": ["가속", "짧은 패스", "긴패스", "시야", "드리블"],
-            "태클": ["반응도", "밸런스", "태클", "슬라이딩 태클", "힘"],
-            "힘": ["밸런스", "태클", "힘", "헤딩", "점프"]
-        };
-
-        // 포지션과 티어표 매핑
-        const positionTiers = {
-            "ST": [
-                ["막스맨", "파워풀", "아키텍트", "타이거"],
-                ["결정력", "공격 마스터", "스나이퍼", "슈퍼카", "로켓", "위치 선정", "민첩성"],
-                ["헤딩", "세컨드 스트라이커", "페이스"],
-                ["공격", "슈팅", "슈팅력"]
-            ],
-            "CF": [
-                ["막스맨", "아키텍트"],
-                ["타이거", "결정력", "공격 마스터", "파워풀", "스나이퍼", "슈퍼카", "로켓", "위치 선정"],
-                ["헤딩", "세컨드 스트라이커", "페이스"],
-                ["공격", "슈팅", "슈팅력"]
-            ],
-            "LW": [
-                ["나이프", "슈퍼카", "로켓"],
-                ["마에스트로", "스나이퍼", "호크", "속도", "공격 마스터", "세컨드 스트라이커"],
-                ["페이스", "위치 선정"],
-                ["민첩성"]
-            ],
-            "RW": [
-                ["나이프", "슈퍼카", "로켓"],
-                ["마에스트로", "스나이퍼", "호크", "속도", "공격 마스터", "세컨드 스트라이커"],
-                ["페이스", "위치 선정"],
-                ["민첩성"]
-            ],
-            "LM": [
-                ["나이프", "슈퍼카", "로켓"],
-                ["마에스트로", "스나이퍼", "호크", "세컨드 스트라이커", "속도", "공격 마스터"],
-                ["세컨드 스트라이커", "페이스"],
-                ["민첩성", "위치 선정"]
-            ],
-            "RM": [
-                ["나이프", "슈퍼카", "로켓"],
-                ["마에스트로", "스나이퍼", "호크", "세컨드 스트라이커", "속도", "공격 마스터"],
-                ["세컨드 스트라이커", "페이스"],
-                ["민첩성", "위치 선정"]
-            ],
-            "CAM": [
-                ["아키텍트", "스나이퍼"],
-                ["공격 마스터", "어택미드", "마에스트로"],
-                ["플레이메이커", "미드엔진", "짧은 패스"],
-                ["카운터", "프리킥", "시야", "볼 컨트롤", "가속", "드리블", "제너럴리스트", "패스"]
-            ],
-            "CM": [
-                ["아키텍트", "스나이퍼"],
-                ["공격 마스터", "어택미드", "짧은 패스", "마에스트로"],
-                ["플레이메이커", "주장", "미드엔진", "슈팅력"],
-                ["카운터", "프리킥", "시야", "볼 컨트롤", "가속", "드리블", "제너럴리스트", "패스"]
-            ],
-            "CDM": [
-                ["월", "특별 구성", "스톤"],
-                ["미드엔진", "짧은 패스", "아키텍트"],
-                ["주장", "플레이메이커"],
-                ["반응도", "제너럴리스트", "가로채기", "공격성"]
-            ],
-            "CB": [
-                ["홀딩", "월", "스톤", "특별 구성"],
-                ["수비 마스터"],
-                ["앵커", "마크", "공격성"],
-                ["수비", "피지컬", "힘", "태클"]
-            ],
-            "LB": [
-                ["글래디에이터", "플라이윙", "특별 구성"],
-                ["스톤", "홀딩"],
-                ["가로채기", "크로스"],
-                ["반응도"]
-            ],
-            "RB": [
-                ["글래디에이터", "스톤", "특별 구성"],
-                ["플라이윙", "홀딩"],
-                ["가로채기", "크로스"],
-                ["반응도"]
-            ],
-            "LWB": [
-                ["글래디에이터", "스톤", "특별 구성"],
-                ["플라이윙", "홀딩"],
-                ["가로채기", "크로스"],
-                ["반응도"]
-            ],
-            "RWB": [
-                ["글래디에이터", "스톤", "특별 구성"],
-                ["플라이윙", "홀딩"],
-                ["가로채기", "크로스"],
-                ["반응도"]
-            ],
-            "GK": [
-                ["라스트라인", "GK 다이빙"],
-                ["글러브", "GK 위치 선정", "반사 신경"],
-                ["GK 제너럴리스트", "핸들링"]
-            ]
-        };
-
-        // 스킬부스트 검색 기능
-        const skillSearchInput = document.getElementById('skill-search');
-        const skillDropdown = document.getElementById('skill-dropdown');
-
-        skillSearchInput.addEventListener('input', () => {
-            const query = skillSearchInput.value.trim().toLowerCase();
-            skillDropdown.innerHTML = '';
+        // 파티클 효과 생성
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
             
-            if (query.length > 0) {
-                const matchedBoosts = Object.keys(skillBoosts).filter(boost => 
-                    boost.toLowerCase().includes(query)
-                );
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // 페이지 로드 시 파티클 생성
+        window.addEventListener('load', createParticles);
+        
+        // 링크 클릭 시 부드러운 효과
+        document.querySelectorAll('.link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(0, 255, 136, 0.6);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    left: ${e.offsetX}px;
+                    top: ${e.offsetY}px;
+                    width: 20px;
+                    height: 20px;
+                    margin-left: -10px;
+                    margin-top: -10px;
+                `;
                 
-                matchedBoosts.forEach(boost => {
-                    const div = document.createElement('div');
-                    div.textContent = boost;
-                    div.onclick = () => {
-                        skillSearchInput.value = boost;
-                        displaySkillResults(boost);
-                        skillDropdown.style.display = 'none';
-                    };
-                    skillDropdown.appendChild(div);
-                });
+                this.appendChild(ripple);
                 
-                skillDropdown.style.display = matchedBoosts.length > 0 ? 'block' : 'none';
-            } else {
-                skillDropdown.style.display = 'none';
-            }
-        });
-
-        // 포커스 시에는 드롭다운 표시하지 않음
-        skillSearchInput.addEventListener('focus', () => {
-            // 포커스만으로는 드롭다운 표시하지 않음
-        });
-
-        // 스탯 검색 기능
-        function setupStatSearch(statInputId, dropdownId) {
-            const statSearchInput = document.getElementById(statInputId);
-            const statDropdown = document.getElementById(dropdownId);
-            const uniqueStats = [...new Set(Object.values(skillBoosts).flat())].sort();
-
-            statSearchInput.addEventListener('input', () => {
-                const query = statSearchInput.value.trim().toLowerCase();
-                statDropdown.innerHTML = '';
-                
-                if (query.length > 0) {
-                    const matchedStats = uniqueStats.filter(stat => 
-                        stat.toLowerCase().includes(query)
-                    );
-                    
-                    matchedStats.forEach(stat => {
-                        const div = document.createElement('div');
-                        div.textContent = stat;
-                        div.onclick = () => {
-                            statSearchInput.value = stat;
-                            statDropdown.style.display = 'none';
-                        };
-                        statDropdown.appendChild(div);
-                    });
-                    
-                    statDropdown.style.display = matchedStats.length > 0 ? 'block' : 'none';
-                } else {
-                    statDropdown.style.display = 'none';
-                }
-            });
-
-            // 포커스 시에는 드롭다운 표시하지 않음
-            statSearchInput.addEventListener('focus', () => {
-                // 포커스만으로는 드롭다운 표시하지 않음
-            });
-        }
-
-        setupStatSearch('stat-search1', 'stat-dropdown1');
-        setupStatSearch('stat-search2', 'stat-dropdown2');
-        setupStatSearch('stat-search3', 'stat-dropdown3');
-
-        // 검색 버튼 클릭 시 스탯에 해당하는 스킬부스트 제공
-        document.getElementById('search-button').addEventListener('click', () => {
-            const stat1 = document.getElementById('stat-search1').value.trim();
-            const stat2 = document.getElementById('stat-search2').value.trim();
-            const stat3 = document.getElementById('stat-search3').value.trim();
-
-            const relevantBoosts = {};
-            const inputStats = [stat1, stat2, stat3].filter(stat => stat);
-            if (inputStats.length === 0) {
-                displayStatResults({});
-                return;
-            }
-
-            Object.entries(skillBoosts).forEach(([boost, stats]) => {
-                const includesAll = inputStats.every(inputStat => stats.includes(inputStat));
-                if (includesAll) {
-                    relevantBoosts[boost] = stats;
-                }
-            });
-
-            displayStatResults(relevantBoosts, stat1, stat2, stat3);
-        });
-
-        // 포지션 검색 기능
-        const positionSearchInput = document.getElementById('position-search');
-        const positionDropdown = document.getElementById('position-dropdown');
-        const allPositions = Object.keys(positionTiers);
-
-        positionSearchInput.addEventListener('input', () => {
-            const query = positionSearchInput.value.trim().toUpperCase();
-            positionDropdown.innerHTML = '';
-            
-            if (query.length > 0) {
-                const matchedPositions = allPositions.filter(position => 
-                    position.includes(query)
-                );
-                
-                matchedPositions.forEach(position => {
-                    const div = document.createElement('div');
-                    div.textContent = position;
-                    div.onclick = () => {
-                        positionSearchInput.value = position;
-                        displayPositionTier(position);
-                        positionDropdown.style.display = 'none';
-                    };
-                    positionDropdown.appendChild(div);
-                });
-                
-                positionDropdown.style.display = matchedPositions.length > 0 ? 'block' : 'none';
-            } else {
-                positionDropdown.style.display = 'none';
-            }
-        });
-
-        // 포커스 시에는 드롭다운 표시하지 않음
-        positionSearchInput.addEventListener('focus', () => {
-            // 포커스만으로는 드롭다운 표시하지 않음
-        });
-
-        // 검색 결과 표시 함수들
-        function displaySkillResults(boost) {
-            const skillContent = document.getElementById('skill-content');
-            skillContent.innerHTML = `<strong>${boost}:</strong> ${skillBoosts[boost].join(', ')}`;
-        }
-
-        function displayStatResults(boosts, stat1, stat2, stat3) {
-            const statContent = document.getElementById('stat-content');
-            if (Object.keys(boosts).length === 0) {
-                statContent.innerHTML = '<span style="color: rgba(255, 255, 255, 0.6);">조건에 맞는 스킬부스트가 없습니다.</span>';
-                return;
-            }
-            
-            const boostsList = Object.keys(boosts).map(boost => {
-                const stats = Array.from(boosts[boost]).map(s => {
-                    const isBold = [stat1, stat2, stat3].includes(s);
-                    return `<span class="${isBold ? 'bold' : ''}">${s}</span>`;
-                }).join(', ');
-                return `<div style="margin-bottom: 8px; line-height: 1.5;"><strong style="color: #39FF14;">${boost}:</strong> ${stats}</div>`;
-            }).join('');
-            statContent.innerHTML = boostsList;
-        }
-
-        function displayPositionTier(position) {
-            const tierContent = document.getElementById('tier-content');
-            const tiers = positionTiers[position];
-            if (tiers) {
-                const tierColors = ['#39FF14', '#00FFFF', '#FFD700', '#FF6B6B'];
-                const tierHtml = tiers.map((tier, index) => {
-                    return `<div style="margin-bottom: 8px; line-height: 1.5;"><strong style="color: ${tierColors[index] || '#39FF14'};">${index + 1}티어:</strong> ${tier.join(', ')}</div>`;
-                }).join('');
-                tierContent.innerHTML = tierHtml;
-            } else {
-                tierContent.innerHTML = '<span style="color: rgba(255, 255, 255, 0.6);">해당 포지션의 티어 정보가 없습니다.</span>';
-            }
-        }
-
-        // 이메일 복사 기능
-        function copyEmail() {
-            const email = 'leehajune1017@gmail.com';
-            
-            if (navigator.clipboard && window.isSecureContext) {
-                // 모던 브라우저용 Clipboard API
-                navigator.clipboard.writeText(email).then(() => {
-                    showNotification('이메일이 복사되었습니다! 📧');
-                }).catch(() => {
-                    fallbackCopyEmail(email);
-                });
-            } else {
-                // 구형 브라우저용 fallback
-                fallbackCopyEmail(email);
-            }
-        }
-
-        function fallbackCopyEmail(email) {
-            const emailInput = document.getElementById('email');
-            emailInput.style.display = 'block';
-            emailInput.select();
-            emailInput.setSelectionRange(0, 99999);
-            
-            try {
-                document.execCommand('copy');
-                showNotification('이메일이 복사되었습니다! 📧');
-            } catch (err) {
-                showNotification('복사 실패: ' + email);
-            }
-            
-            emailInput.style.display = 'none';
-        }
-
-        function showNotification(message) {
-            // 기존 알림 제거
-            const existingNotification = document.querySelector('.notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-
-            // 새 알림 생성
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: linear-gradient(45deg, #39FF14, #00FFFF);
-                color: black;
-                padding: 12px 24px;
-                border-radius: 25px;
-                font-weight: bold;
-                z-index: 10000;
-                animation: slideDown 0.3s ease;
-                box-shadow: 0 5px 15px rgba(57, 255, 20, 0.3);
-            `;
-
-            document.body.appendChild(notification);
-
-            // 3초 후 제거
-            setTimeout(() => {
-                notification.style.animation = 'slideUp 0.3s ease';
                 setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        // 알림 애니메이션 CSS 추가
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // 리플 효과 CSS 애니메이션
         const style = document.createElement('style');
         style.textContent = `
-            @keyframes slideDown {
-                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-                to { transform: translateX(-50%) translateY(0); opacity: 1; }
-            }
-            @keyframes slideUp {
-                from { transform: translateX(-50%) translateY(0); opacity: 1; }
-                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
             }
         `;
         document.head.appendChild(style);
-
-        // 클릭 이벤트로 드롭다운 닫기
-        document.addEventListener('click', (event) => {
-            const dropdowns = ['skill-dropdown', 'stat-dropdown1', 'stat-dropdown2', 'stat-dropdown3', 'position-dropdown'];
-            const inputs = ['skill-search', 'stat-search1', 'stat-search2', 'stat-search3', 'position-search'];
-            
-            dropdowns.forEach((dropdownId, index) => {
-                const dropdown = document.getElementById(dropdownId);
-                const input = document.getElementById(inputs[index]);
-                
-                if (!event.target.matches(`#${inputs[index]}`) && !dropdown.contains(event.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-        });
-
-        // 엔터 키로 검색 실행
-        document.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                if (event.target.matches('#stat-search1, #stat-search2, #stat-search3')) {
-                    document.getElementById('search-button').click();
-                }
-            }
-        });
-
-        // 터치 이벤트 최적화
-        if ('ontouchstart' in window) {
-            document.addEventListener('touchstart', () => {
-                // 터치 디바이스에서 hover 효과 개선
-            }, { passive: true });
-        }
-
-        // 전역 함수로 copyEmail 등록
-        window.copyEmail = copyEmail;
     </script>
 </body>
 </html>
