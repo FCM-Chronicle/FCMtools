@@ -1,4 +1,297 @@
-먹튀충아 나가
-너한테 줄 링크는 없다
-정 얻고싶으면 니가 먹튀한 방으로 와서 사과하고
-활동 열심히 해라
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="google-site-verification" content="4XUipqpdRxTrgHXAlNuYEPLTn9Njhmah2mtqYZqNvYg" />
+<meta name="description" content="FC모바일에 도움이 되는 도구들 입니다.">
+<meta name="keywords" content="fc모바일, 피모, 도구, 피파모바일, 피모, 엪모, 툴">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC 모바일 툴</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #071a10;
+    --turf-a: #0a2416;
+    --turf-b: #0d2c1a;
+    --bg-panel: #0f2618;
+    --line: rgba(231,242,236,0.11);
+    --line-strong: rgba(231,242,236,0.22);
+    --green: #4ade80;
+    --amber: #ffb136;
+    --text: #ecf3ee;
+    --text-mute: #8a9c92;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ background:var(--bg); }
+
+  body{
+    font-family:'Rajdhani', 'Malgun Gothic', sans-serif;
+    background:
+      radial-gradient(circle at 50% -10%, rgba(255,177,54,0.08), transparent 45%),
+      repeating-linear-gradient(128deg, var(--turf-a) 0 42px, var(--turf-b) 42px 84px);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:56px 20px 32px;
+  }
+
+  /* static pitch-marking motif — pure CSS, no animation, cheap to paint */
+  .pitch-lines{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+  .pitch-lines::before{
+    /* halfway line */
+    content:'';
+    position:absolute;
+    top:190px;
+    left:8%;
+    right:8%;
+    height:1px;
+    background:var(--line);
+  }
+  .pitch-lines::after{
+    /* centre circle */
+    content:'';
+    position:absolute;
+    top:120px;
+    left:50%;
+    width:140px;
+    height:140px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    transform:translateX(-50%);
+  }
+  .corner-arc{
+    position:fixed;
+    width:70px;
+    height:70px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:0;
+  }
+  .corner-arc.tl{ top:-45px; left:-45px; }
+  .corner-arc.tr{ top:-45px; right:-45px; }
+  .corner-arc.bl{ bottom:-45px; left:-45px; }
+  .corner-arc.br{ bottom:-45px; right:-45px; }
+
+  .wrap{ position:relative; z-index:1; width:100%; max-width:920px; }
+
+  header{ text-align:center; margin-bottom:44px; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.32em;
+    color:var(--amber);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+
+  h1{
+    font-size:clamp(2.4rem, 8vw, 3.6rem);
+    font-weight:700;
+    letter-spacing:0.04em;
+    line-height:1;
+    color:var(--text);
+  }
+  h1 span{ color:var(--green); }
+
+  .subtitle{
+    margin-top:14px;
+    font-size:1rem;
+    font-weight:500;
+    color:var(--text-mute);
+    letter-spacing:0.01em;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:14px;
+  }
+
+  .card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding:20px 22px 18px;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    text-decoration:none;
+    color:var(--text);
+    overflow:hidden;
+    transition:border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:38px;
+    height:38px;
+    padding:0 6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.66rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    color:var(--amber);
+    background:rgba(255,177,54,0.08);
+    border:1px solid rgba(255,177,54,0.4);
+    border-radius:50%;
+  }
+
+  .arrow{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--text-mute);
+    font-size:0.95rem;
+    transition:transform 0.2s ease, color 0.2s ease;
+  }
+
+  .name{
+    font-size:1.22rem;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+
+  .underline{
+    height:2px;
+    width:100%;
+    background:var(--line);
+    position:relative;
+    overflow:hidden;
+    border-radius:2px;
+  }
+  .underline::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:var(--green);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform 0.25s ease;
+  }
+
+  /* hover only where hover is actually supported — keeps touch devices lag-free */
+  @media (hover:hover) and (pointer:fine){
+    .card:hover{
+      border-color:var(--line-strong);
+      transform:translateY(-3px);
+    }
+    .card:hover .arrow{ transform:translateX(3px); color:var(--green); }
+    .card:hover .underline::after{ transform:scaleX(1); }
+  }
+
+  .card:active{ transform:scale(0.98); }
+
+  footer{
+    margin-top:52px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    width:100%;
+    max-width:920px;
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    color:var(--text-mute);
+    letter-spacing:0.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .arrow, .underline::after{ transition:none; }
+  }
+
+  @media (max-width:600px){
+    body{ padding:40px 16px 24px; }
+    header{ margin-bottom:32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="pitch-lines" aria-hidden="true"></div>
+<div class="corner-arc tl" aria-hidden="true"></div>
+<div class="corner-arc tr" aria-hidden="true"></div>
+<div class="corner-arc bl" aria-hidden="true"></div>
+<div class="corner-arc br" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">⚽ Kick-off · Matchday Toolkit</div>
+    <h1>FC MOBILE <span>TOOLS</span></h1>
+    <p class="subtitle">최고의 FC 모바일 도구들을 한 곳에서</p>
+  </header>
+
+  <div class="grid">
+    <a href="https://fcm-chronicle.github.io/fcmskill/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">FW</span><span class="arrow">→</span></div>
+      <span class="name">스킬 부스트</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcm-chronicle.github.io/gaksungstat/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">MF</span><span class="arrow">→</span></div>
+      <span class="name">각성 스탯 조회</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcm-chronicle.github.io/fcmmaxstat/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">DF</span><span class="arrow">→</span></div>
+      <span class="name">만렙 스탯 조회</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcm-chronicle.github.io/susuryo/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">GK</span><span class="arrow">→</span></div>
+      <span class="name">수수료 계산기</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcmobile.nexon.com/DataCenterWeb/SquadMaker" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">MGR</span><span class="arrow">→</span></div>
+      <span class="name">스쿼드 메이커</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcm-chronicle.github.io/fcmpredict/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">AN</span><span class="arrow">→</span></div>
+      <span class="name">선수 시세 예측</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcm-chronicle.github.io/cardenchant/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">MF</span><span class="arrow">→</span></div>
+      <span class="name">선수 강화 시뮬레이션</span>
+      <span class="underline"></span>
+    </a>
+
+    <a href="https://fcmplayerreview.glit3ch.me/" class="card" target="_blank" rel="noopener">
+      <div class="card-top"><span class="tag">SCOUT</span><span class="arrow">→</span></div>
+      <span class="name">선수 리뷰 (제작중)</span>
+      <span class="underline"></span>
+    </a>
+  </div>
+
+  <footer>© 2025 FC MOBILE TOOLS — MADE BY FCM/CHRONICLE</footer>
+</div>
+
+</body>
+</html>
